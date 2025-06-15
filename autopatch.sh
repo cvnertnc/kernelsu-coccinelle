@@ -79,11 +79,23 @@ if [[ "$MODE" == "scope" ]]; then
   fi
 
   echo "[*] Applying scope-minimized patch to relevant dirs..."
-  TARGET_DIRS=(fs drivers/input drivers/tty arch/arm/kernel kernel include/linux/cred.h security/selinux)
-  for d in "${TARGET_DIRS[@]}"; do
-    TARGET_PATH="$KERNEL_DIR/$d"
-    if [[ -e "$TARGET_PATH" ]]; then
-      echo "[→] $TARGET_PATH"
+  TARGETS=(
+    fs
+    drivers/input
+    drivers/tty
+    arch/arm/kernel
+    kernel
+    include/linux/cred.h
+    security/selinux
+  )
+
+  for target in "${TARGETS[@]}"; do
+    TARGET_PATH="$KERNEL_DIR/$target"
+    if [[ -d "$TARGET_PATH" ]]; then
+      echo "[→] Dir: $TARGET_PATH"
+      spatch --sp-file "$PATCH_FILE" --dir "$TARGET_PATH" --in-place --linux-spacing
+    elif [[ -f "$TARGET_PATH" ]]; then
+      echo "[→] File: $TARGET_PATH"
       spatch --sp-file "$PATCH_FILE" --in-place --linux-spacing "$TARGET_PATH"
     else
       echo "[!] Skipping missing: $TARGET_PATH"
