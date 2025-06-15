@@ -2,11 +2,11 @@
 
 set -e
 
-🔧 # Settings
+# Settings
 PATCH_REPO_URL="https://github.com/devnoname120/kernelsu-coccinelle.git"
 PATCH_DIR_NAME="kernelsu-coccinelle"
 
-🔍 # Usage control
+# Usage control
 if [[ -z "$1" ]]; then
   echo "Usage: bash autopatch.sh <kernel-source-path> [patch1.cocci patch2.cocci ...]"
   exit 1
@@ -15,13 +15,13 @@ fi
 KERNEL_DIR="$1"
 shift
 
-📦 # Is coccinelle installed?
+# Is coccinelle installed?
 if ! command -v spatch &>/dev/null; then
   echo "[!] Error: 'spatch' (Coccinelle) is not installed. Please install it first."
   exit 2
 fi
 
-📁 # Is there a patch repository? Or clone it
+# Is there a patch repository? Or clone it
 if [[ ! -d "$PATCH_DIR_NAME" ]]; then
   echo "[+] Cloning patch repo: $PATCH_REPO_URL"
   git clone --depth=1 "$PATCH_REPO_URL" "$PATCH_DIR_NAME"
@@ -29,7 +29,7 @@ else
   echo "[=] Patch repo already exists: $PATCH_DIR_NAME"
 fi
 
-🧩 # Select patches to apply
+# Select patches to apply
 if [[ "$#" -gt 0 ]]; then
   COCCI_LIST=("$@")
 else
@@ -39,7 +39,7 @@ fi
 echo "[+] Kernel source: $KERNEL_DIR"
 echo "[+] Applying ${#COCCI_LIST[@]} patches..."
 
-🔄 # Apply patches sequentially
+# Apply patches sequentially
 for COCCI in "${COCCI_LIST[@]}"; do
   if [[ -f "$COCCI" ]]; then
     echo "[*] Applying $(basename "$COCCI") → recursively to $KERNEL_DIR"
