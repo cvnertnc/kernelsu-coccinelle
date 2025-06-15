@@ -1,17 +1,25 @@
 # How to use
 
 1) Install [Coccinelle](https://coccinelle.gitlabpages.inria.fr/website/download.html)
-2) Run these commands from a Linux shell:
+2) Run the following command to automatically apply all `.cocci` patches to your kernel source:
   ```sh
-  spatch --sp-file input_handle_event.cocci --in-place --linux-spacing /path-to-kernel/drivers/input/input.c
-  find . -iname '*.cocci' | xargs -I{} -P0 spatch --sp-file {} --dir /path-to-kernel/fs --in-place --linux-spacing
+  curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel
   ```
+
+  This will:
+
+  Automatically clone the patch repository if not already present
   
-  For example in my case my kernel source location is `~/dev/kernel_xiaomi_sm6150` so I run these commands:
-  
+  Apply all `.cocci` patches in the repository to the kernel source
+
+  For example, if your kernel source is located at `~/dev/kernel_xiaomi_sm6150`, you can run:
   ```sh
-  spatch --sp-file input_handle_event.cocci --in-place --linux-spacing ~/dev/kernel_xiaomi_sm6150/drivers/input/input.c
-  find . -iname '*.cocci' | xargs -I{} -P0 spatch --sp-file {} --dir ~/dev/kernel_xiaomi_sm6150/fs --in-place --linux-spacing
+  curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s ~/dev/kernel_xiaomi_sm6150
+  ```
+
+3. (Optional) To apply only specific `.cocci` patches:
+  ```sh
+  curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel vfs_read.cocci execveat.cocci
   ```
 
 # How to learn Coccinelle
