@@ -4,7 +4,7 @@
 
 2) Run the following command to automatically apply the KernelSU patches to your kernel source:
 ```sh
-curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -ksu -o
+curl -LSs "https://raw.githubusercontent.com/devnoname120/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -ksu -o
 ```
 
 This will:
@@ -13,7 +13,7 @@ This will:
 
 **Example:**
 ```sh
-curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s ~/dev/kernel_xiaomi_sm6150 -ksu -o
+curl -LSs "https://raw.githubusercontent.com/devnoname120/kernelsu-coccinelle/main/autopatch.sh" | bash -s ~/dev/kernel_xiaomi_sm6150 -ksu -o
 ```
 
 ---
@@ -22,12 +22,12 @@ curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/a
 
 🔹 **Apply only specific `.cocci` patches to mapped kernel files:**
 ```sh
-curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -ksu -m vfs_read.cocci execveat.cocci
+curl -LSs "https://raw.githubusercontent.com/devnoname120/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -ksu -m vfs_read.cocci execveat.cocci
 ```
 
 🔹 **Use scope-minimized hooks instead (not compatible with other patches):**
 ```sh
-curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -scope
+curl -LSs "https://raw.githubusercontent.com/devnoname120/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -scope
 ```
 
 This will apply the alternative patch `scope-minimized-hooks/kernelsu-scope-minimized.cocci` to a set of minimal, performance-sensitive directories.
