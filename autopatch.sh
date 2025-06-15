@@ -15,18 +15,24 @@ fi
 KERNEL_DIR="$1"
 shift
 
-# Is coccinelle installed?
+# Is Coccinelle installed?
 if ! command -v spatch &>/dev/null; then
-  echo "[!] Error: 'spatch' (Coccinelle) is not installed. Please install it first."
+  echo "[!] Coccinelle (spatch) is not installed."
+  echo "Please install it first:"
+  echo "  https://coccinelle.gitlabpages.inria.fr/website/download.html"
+  echo ""
+  echo "Example (Debian/Ubuntu):"
+  echo "  sudo apt update && sudo apt install coccinelle"
   exit 2
 fi
 
-# Is there a patch repository? Or clone it
+# Clone or update patch repository
 if [[ ! -d "$PATCH_DIR_NAME" ]]; then
   echo "[+] Cloning patch repo: $PATCH_REPO_URL"
   git clone --depth=1 "$PATCH_REPO_URL" "$PATCH_DIR_NAME"
 else
   echo "[=] Patch repo already exists: $PATCH_DIR_NAME"
+  echo -e "[=] To update patches, run:\n  cd $PATCH_DIR_NAME && git pull"
 fi
 
 # Select patches to apply
