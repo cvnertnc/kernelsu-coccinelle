@@ -1,26 +1,53 @@
 # How to use
 
 1) Install [Coccinelle](https://coccinelle.gitlabpages.inria.fr/website/download.html)
-2) Run the following command to automatically apply all `.cocci` patches to your kernel source:
-  ```sh
-  curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel
-  ```
 
-  This will:
+2) Run the following command to automatically apply the KernelSU patches to your kernel source:
+```sh
+curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -ksu -o
+```
 
-  Automatically clone the patch repository if not already present
-  
-  Apply all `.cocci` patches in the repository to the kernel source
+This will:
+- Automatically clone the patch repository if not already present
+- Apply all `.cocci` patches from the main patch set **recursively** across the kernel tree
 
-  For example, if your kernel source is located at `~/dev/kernel_xiaomi_sm6150`, you can run:
-  ```sh
-  curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s ~/dev/kernel_xiaomi_sm6150
-  ```
+**Example:**
+```sh
+curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s ~/dev/kernel_xiaomi_sm6150 -ksu -o
+```
 
-3. (Optional) To apply only specific `.cocci` patches:
-  ```sh
-  curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel vfs_read.cocci execveat.cocci
-  ```
+---
+
+### Optional Usage
+
+🔹 **Apply only specific `.cocci` patches to mapped kernel files:**
+```sh
+curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -ksu -m vfs_read.cocci execveat.cocci
+```
+
+🔹 **Use scope-minimized hooks instead (not compatible with other patches):**
+```sh
+curl -LSs "https://raw.githubusercontent.com/cvnertnc/kernelsu-coccinelle/main/autopatch.sh" | bash -s /path-to-kernel -scope
+```
+
+This will apply the alternative patch `scope-minimized-hooks/kernelsu-scope-minimized.cocci` to a set of minimal, performance-sensitive directories.
+
+> ⚠️ Do **not** combine `-scope` with other patch modes.
+
+---
+
+### Options Summary
+
+| Option       | Description                                                                 |
+|--------------|-----------------------------------------------------------------------------|
+| `-ksu`       | (Default) Use KernelSU standard patch set                                   |
+| `-scope`     | Use the minimal performance-impacting patch only                            |
+| `-o`         | Apply patches recursively across all `.c` files in the kernel source        |
+| `-m`         | Apply patches only to known target files (recommended for safety)           |
+
+---
+
+For more information on writing and learning about `.cocci` patches, see the **Learning Coccinelle** section below.
 
 # How to learn Coccinelle
 
